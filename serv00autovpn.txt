@@ -1,0 +1,23 @@
+清理serv00服务器：
+pkill -kill -u ${qqma}
+chmod -R 755 ~/* 
+chmod -R 755 ~/.* 
+rm -rf ~/.* 
+rm -rf ~/*
+
+# bash <(curl -Ls https://raw.githubusercontent.com/eooce/sing-box/main/sb_serv00.sh)
+创建密钥对
+ssh-keygen -t rsa -b 4096 -C "qqma@s2.serv00.com"
+cat ~/.ssh/id_rsa.pub | tee -a ~/.ssh/authorized_keys
+显示私钥，后续拷贝到VPS的私钥文件中
+cat ~/.ssh/id_rsa
+  
+VPS：
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+nano .ssh/serv00qqma              #将私钥写入此文件
+sudo chmod 600 .ssh/serv00qqma
+
+ssh -i .ssh/serv00horsemailma horsemailma@s2.serv00.com "/home/horsemailma/serv00.sh"
+将下面一行加入crontab -e中定时任务每天一次。
+30 2 * * * ssh -i.ssh/serv00qqma qqma@s2.serv00.com "/home/qqma/serv00.sh"
